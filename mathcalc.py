@@ -1,9 +1,15 @@
 # Setup a bunch of global variables
+<<<<<<< HEAD
 # Eventually these can and should be moved to a config file or input arg for CLI style function
 DragCoefficient = 0.205 # default Cd
 MagnCoefficient = 0.001 # default lift coefficienet
 AirDensity = 1.225      # kg/m^3
 AirDynDens = 1.825e-5   # kg/m-s
+=======
+DragCoefficient = 0.275 # default Cd
+AirDensity = 1.225      # kg/m^3
+AirDynDens = 1.805e-5   # kg/m-s
+>>>>>>> 67646f2fca4fba12a3b9d0fe0ab6b005f36f323a
 SurfaceArea = 0.001330  # m^2 effective surface area (dimpled) 0.00133
 Radius = 0.042672       # meters
 Vx0 = 40                # m/s
@@ -11,15 +17,24 @@ Vy0 = 25                # m/s
 Vz0 = 0                 # m/s
 BackSpin = 104.719755   # rad/s Z axis spin
 SideSpin = 14.719755    # rad/s Y axis spin this needs to be *-1 in the equations for convention
+<<<<<<< HEAD
 BarrelSp = 0            # rad/s X axis spin, basically not realistic but included for completeness
 gravity = 9.8                 # m/s^2
 m = 0.0453              # kg weight of golf ball
 spindecay = 0.05        # 5% per second
 SpDragRt = 0.0001       # Spin drag rate
+=======
+BarrelSp = 0            # rad/s X axis spin
+g = 9.8                 # m/s^2
+m = 0.04592623          # kg weight of golf ball
+balldiam = 0.042672     # meters
+spindecay = 0.04        # 4% per second
+>>>>>>> 67646f2fca4fba12a3b9d0fe0ab6b005f36f323a
 
 import math
 
 def calcX(dt,vx,vy,vz):
+<<<<<<< HEAD
     xresist = calcAirResist(BackSpin,vx)
     ymagnus = calcMagnus(BackSpin,-vy)  # Vy increases X drag on the ball
     zmagnus = calcMagnus(SideSpin,vz)
@@ -61,6 +76,46 @@ def calcDragCoef(sp1,Velocity):
 def calcMagnus(sp1,Velocity):
     gmagnus = math.pi * Radius**2 * sp1 * 1.7 # Turbulent air factor
     Mforce = AirDensity * Velocity * gmagnus * Radius**2 
+=======
+    xresist = calcAirResist(vx)
+    xmagnus = calcMagnus(BackSpin,-vy)
+    zmagnus = calcMagnus(-SideSpin,vz)
+    dx = vx*dt # need to solve for dx
+    vx = vx - xresist*dt/m + xmagnus*dt/m + zmagnus*dt/m
+    return dx,vx
+
+def calcY(dt,vy,vx,vz):
+    yresist = calcAirResist(vy)
+    ymagnus = calcMagnus(BackSpin,vx)
+    zmagnus = calcMagnus(BarrelSp,-vz)
+    
+    dy = vy*dt  # need to solve for dy
+    vy = vy - g*dt - yresist*dt/m + ymagnus*dt/m + zmagnus*dt/m
+    return dy,vy
+
+def calcZ(dt,vz,vx,vy):
+    zresist = calcAirResist(vz)
+    ymagnus = calcMagnus(BarrelSp,vy)
+    xmagnus = calcMagnus(-SideSpin,-vx)
+    dz = vz*dt
+    vz = vz - zresist*dt/m - xmagnus*dt/m + ymagnus*dt/m
+    return dz,vz
+
+def calcAirResist(Velocity):
+    calcDragCoef(Velocity)
+    airResistance = 0.5 * DragCoefficient * AirDensity * SurfaceArea * Velocity**2
+    return airResistance
+
+def calcDragCoef(Velocity):
+    global DragCoefficient
+    reynolds = AirDensity * Velocity * balldiam / AirDynDens
+    # At High velocities there will be less drag
+    DragCoefficient = max(min(1.35 - 1.0e-5 * reynolds,1),0.15) # Rough estimate based on available prov1 and chromesoft data
+
+def calcMagnus(s1,v1):
+    g = 2 * math.pi * Radius**2 * s1        # MagnusCoefficient
+    Mforce = AirDensity * v1 * g * 0.001    # linear G i forget why i needed 0.001
+>>>>>>> 67646f2fca4fba12a3b9d0fe0ab6b005f36f323a
     return Mforce
 
 def calcSpinDecay(dt):
@@ -84,6 +139,12 @@ def updateGlobals(ballspeed,launchangle,sprate,sangle,sspinr):
     SideSpin = sspinr * 2 * math.pi / 60 # Convert RPM to rad/sec
 
 def getInitialV():
+<<<<<<< HEAD
+=======
+    global Vy0
+    global Vx0
+    global Vz0
+>>>>>>> 67646f2fca4fba12a3b9d0fe0ab6b005f36f323a
     return Vx0,Vy0,Vz0
 
 def meterstoyards(meter_array):
