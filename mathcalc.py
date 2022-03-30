@@ -11,11 +11,11 @@ Vy0 = 25                # m/s
 Vz0 = 0                 # m/s
 BackSpin = 104.719755   # rad/s Z axis spin
 SideSpin = 14.719755    # rad/s Y axis spin this needs to be *-1 in the equations for convention
-BarrelSp = 0            # rad/s X axis spin
+BarrelSp = 0            # rad/s X axis spin, basically not realistic but included for completeness
 g = 9.8                 # m/s^2
 m = 0.0453              # kg weight of golf ball
 spindecay = 0.05        # 5% per second
-SpDragRt = 0.000212     # Spin drag rate
+SpDragRt = 0.0001       # Spin drag rate
 
 import math
 
@@ -24,7 +24,7 @@ def calcX(dt,vx,vy,vz):
     ymagnus = calcMagnus(BackSpin,-vy)  # Vy increases X drag on the ball
     zmagnus = calcMagnus(SideSpin,vz)
     dx = vx*dt # need to solve for dx
-    vx = vx - xresist*dt/m + ymagnus*dt/m + zmagnus*dt/m #update vx
+    vx = vx - xresist*dt/m + ymagnus*dt/m + zmagnus*dt/m
     return dx,vx
 
 def calcY(dt,vy,vx,vz):
@@ -51,17 +51,16 @@ def calcAirResist(sp1,Velocity):
 
 def calcDragCoef(sp1,Velocity):
     global DragCoefficient
-    reynolds = AirDensity * Velocity * (2 * Radius) / AirDynDens
+    reynolds = AirDensity * abs(Velocity) * (2 * Radius) / AirDynDens
     # At High velocities there will be less drag
-    InitialDrag = max(min(0.8 - 6e-5 * reynolds + 9e-10 * reynolds**2,0.9),0.1)
+    InitialDrag = math.exp(-0.0000054*reynolds)
     SpinDrag =  SpDragRt * sp1
     DragCoefficient = InitialDrag + SpinDrag
+    print(DragCoefficient)
 
-def calcMagnus(s1,v1):
-    g = 2 * math.pi * Radius**2 * s1
-    reynoldsM = AirDensity * 4 * math.pi * v1 * Radius**2 / AirDynDens
-    MDrag = max(min(0.9 - 1.7e-5 * reynoldsM + 9e-11 * reynoldsM**2,1),0.1)
-    Mforce = AirDensity * v1 * g * 0.006 * MDrag  # Turbulent air factor
+def calcMagnus(sp1,Velocity):
+    g = 2 * math.pi * Radius**2 * sp1
+    Mforce = AirDensity * Velocity * g * Radius**2  # Turbulent air factor
     return Mforce
 
 def calcSpinDecay(dt):

@@ -51,6 +51,7 @@ class uiWindow():
         self.spinrate.grid(row=2, column=1, padx=xpadding, pady=ypadding)
         self.spinrate.insert(0,"2686")
 
+
         Label(self.leftFrame, text="Shape Angle (deg):", bg=bgcolor, anchor="e", width=labelwidth).grid(row=3, column=0, padx=xpadding, pady=ypadding)
         self.sideangle = Entry(self.leftFrame,width=10)
         self.sideangle.grid(row=3, column=1, padx=xpadding, pady=ypadding)
