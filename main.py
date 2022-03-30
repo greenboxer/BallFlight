@@ -39,28 +39,28 @@ class uiWindow():
         Label(self.leftFrame, text="Ball Speed (mph):", bg=bgcolor, anchor="e", width=labelwidth).grid(row=0, column=0, padx=xpadding, pady=ypadding)
         self.ballspeed = Entry(self.leftFrame,width=10)
         self.ballspeed.grid(row=0, column=1, padx=xpadding, pady=ypadding)
-        self.ballspeed.insert(0,"167.0")
+        self.ballspeed.insert(0,"100.0")
 
         Label(self.leftFrame, text="Launch Angle (deg):", bg=bgcolor, anchor="e", width=labelwidth).grid(row=1, column=0, padx=xpadding, pady=ypadding)
         self.launchangle = Entry(self.leftFrame,width=10)
         self.launchangle.grid(row=1, column=1, padx=xpadding, pady=ypadding)
-        self.launchangle.insert(0,"10.9")
+        self.launchangle.insert(0,"17.0")
         
         Label(self.leftFrame, text="Back Spin (rpm):", bg=bgcolor, anchor="e", width=labelwidth).grid(row=2, column=0, padx=xpadding, pady=ypadding)
         self.spinrate = Entry(self.leftFrame,width=10)
         self.spinrate.grid(row=2, column=1, padx=xpadding, pady=ypadding)
-        self.spinrate.insert(0,"2686")
+        self.spinrate.insert(0,"7000")
 
 
         Label(self.leftFrame, text="Shape Angle (deg):", bg=bgcolor, anchor="e", width=labelwidth).grid(row=3, column=0, padx=xpadding, pady=ypadding)
         self.sideangle = Entry(self.leftFrame,width=10)
         self.sideangle.grid(row=3, column=1, padx=xpadding, pady=ypadding)
-        self.sideangle.insert(0,"0")
+        self.sideangle.insert(0,"1")
 
         Label(self.leftFrame, text="Side Spin (rpm):", bg=bgcolor, anchor="e", width=labelwidth).grid(row=4, column=0, padx=xpadding, pady=ypadding)
         self.sidespin = Entry(self.leftFrame,width=10)
         self.sidespin.grid(row=4, column=1, padx=xpadding, pady=ypadding)
-        self.sidespin.insert(0,"0")
+        self.sidespin.insert(0,"-100")
 
         self.clrplt = IntVar()
         self.clrcheck = Checkbutton(self.leftFrame,text="Clear Plots?",bg=bgcolor,variable=self.clrplt)

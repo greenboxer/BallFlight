@@ -12,7 +12,7 @@ Vz0 = 0                 # m/s
 BackSpin = 104.719755   # rad/s Z axis spin
 SideSpin = 14.719755    # rad/s Y axis spin this needs to be *-1 in the equations for convention
 BarrelSp = 0            # rad/s X axis spin, basically not realistic but included for completeness
-g = 9.8                 # m/s^2
+gravity = 9.8                 # m/s^2
 m = 0.0453              # kg weight of golf ball
 spindecay = 0.05        # 5% per second
 SpDragRt = 0.0001       # Spin drag rate
@@ -33,7 +33,7 @@ def calcY(dt,vy,vx,vz):
     zmagnus = calcMagnus(BarrelSp,-vz)
     
     dy = vy*dt  # need to solve for dy
-    vy = vy - g*dt - yresist*dt/m + xmagnus*dt/m + zmagnus*dt/m
+    vy = vy - gravity*dt - yresist*dt/m + xmagnus*dt/m + zmagnus*dt/m
     return dy,vy
 
 def calcZ(dt,vz,vx,vy):
@@ -59,8 +59,8 @@ def calcDragCoef(sp1,Velocity):
     print(DragCoefficient)
 
 def calcMagnus(sp1,Velocity):
-    g = 2 * math.pi * Radius**2 * sp1
-    Mforce = AirDensity * Velocity * g * Radius**2  # Turbulent air factor
+    gmagnus = math.pi * Radius**2 * sp1 * 1.7 # Turbulent air factor
+    Mforce = AirDensity * Velocity * gmagnus * Radius**2 
     return Mforce
 
 def calcSpinDecay(dt):
